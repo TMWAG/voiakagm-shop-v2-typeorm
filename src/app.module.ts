@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import CONNECTION from './config/db.config';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import CONNECTION from './config/db.config';
       autoLoadEntities: true,
       synchronize: Boolean(process.env.DB_SYNC),
     }),
+    UsersModule,
   ],
   controllers: [],
   providers: [],
