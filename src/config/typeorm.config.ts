@@ -3,7 +3,7 @@ import CONNECTION from './db.config';
 
 const AppDataSource = new DataSource({
   ...CONNECTION,
-  entities: ['src/modules/*/*.entity.ts'],
+  entities: ['src/modules/**/entities/*.db.entity.ts'],
   migrations: ['src/migrations/*.ts'],
   synchronize: Boolean(process.env.DB_SYNC),
 });
