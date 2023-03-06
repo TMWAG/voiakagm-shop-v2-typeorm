@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import CONNECTION from './config/db.config';
 import { UsersModule } from './modules/users/users.module';
+import { CategoryModule } from './modules/category/category.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { UsersModule } from './modules/users/users.module';
       synchronize: Boolean(process.env.DB_SYNC),
     }),
     UsersModule,
+    CategoryModule,
   ],
   controllers: [],
   providers: [],
