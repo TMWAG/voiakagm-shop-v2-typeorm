@@ -1,7 +1,6 @@
-import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 
-const CONNECTION: Partial<TypeOrmModuleOptions> & PostgresConnectionOptions = {
+const CONNECTION: PostgresConnectionOptions = {
   type: 'postgres',
   host: process.env.POSTGRES_HOST,
   port: Number(process.env.POSTGRES_PORT),
