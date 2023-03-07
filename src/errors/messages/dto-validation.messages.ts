@@ -7,6 +7,7 @@ export const dtoValidationError = {
     phone: 'Должен быть номером телефона',
     positive: 'Не может быть отрицательным',
     uuidV4: 'Должен быть uuid v4',
+    password: 'Пароль должен содержать буквы разных регистров, символы и цифры',
   },
   length: {
     min: (min: number): string => {
