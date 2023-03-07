@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import 'reflect-metadata';
+import { ValidationPipe } from './pipes/validation.pipe';
 
 async function bootstrap() {
   const PORT = process.env.PORT || 5005;
@@ -14,6 +15,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
   app.setGlobalPrefix('/api');
+  app.useGlobalPipes(new ValidationPipe());
   await app.listen(PORT, () => console.log(`server started at ${PORT} port`));
 }
 bootstrap();
