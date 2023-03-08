@@ -8,7 +8,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { dtoValidationError } from 'src/errors/messages/dto-validation.messages';
+import { dtoValidationError } from '../../../errors/messages/dto-validation.messages';
 import { User } from '../entities/user.db.entity';
 
 export class CreateUserDto implements Partial<User> {
