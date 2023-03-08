@@ -14,19 +14,6 @@ export class UsersService {
     return this.usersRepository.create(createUserDto);
   }
 
-  findAll() {
-    this.usersRepository.findOne({ where: { id: 1 } });
-    return `This action returns all users`;
-  }
-
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
-  }
-
   //utility
   async findOneByPhone(phone: string) {
     return await this.usersRepository.findOneBy({ phone });

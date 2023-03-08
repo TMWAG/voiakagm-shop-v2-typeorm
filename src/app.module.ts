@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import CONNECTION from './config/db.config';
 import { UsersModule } from './modules/users/users.module';
 import { CategoryModule } from './modules/category/category.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { CategoryModule } from './modules/category/category.module';
     }),
     UsersModule,
     CategoryModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
