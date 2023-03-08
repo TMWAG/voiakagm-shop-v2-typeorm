@@ -20,7 +20,11 @@ export class UsersService {
   }
 
   findOneByPhone(phone: string) {
-    return this.usersRepository.findOneBy({ phone });
+    return this.usersRepository.findOneByOrFail({ phone });
+  }
+
+  findOneByEmail(email: string) {
+    return this.usersRepository.findOneByOrFail({ email });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

@@ -8,10 +8,11 @@ import { UsersService } from './users.service';
 describe('UsersService', () => {
   let service: UsersService;
   const userPhone = '+79991112233';
+  const userEmail = 'example@mail.me';
   const createUserDto: CreateUserDto = {
     name: 'Никита',
     surname: 'Нечаев',
-    email: 'example@mail.me',
+    email: userEmail,
     phone: userPhone,
     password: 'RandomPass111',
   };
@@ -35,7 +36,7 @@ describe('UsersService', () => {
             create: jest.fn((createUserDto: CreateUserDto) => {
               return userMock(createUserDto);
             }),
-            findOneBy: jest.fn(() => {
+            findOneByOrFail: jest.fn(() => {
               return { ...userMock(createUserDto) };
             }),
           },
@@ -51,7 +52,10 @@ describe('UsersService', () => {
   });
 
   describe('create', () => {
-    it('should return user', async () => {
+    it('should be defined', () => {
+      expect(service.create).toBeDefined();
+    });
+    it('should return user', () => {
       expect(service.create(createUserDto)).toEqual({
         ...userMock(createUserDto),
         id: expect.any(Number),
@@ -60,9 +64,25 @@ describe('UsersService', () => {
     });
   });
 
-  describe('find one by phone number', () => {
+  describe('find one user by phone number', () => {
+    it('should be defined', () => {
+      expect(service.findOneByPhone).toBeDefined();
+    });
     it('should return user with matching phone number', () => {
       expect(service.findOneByPhone(userPhone)).toEqual({
+        ...userMock(createUserDto),
+        id: expect.any(Number),
+        token: expect.any(String),
+      });
+    });
+  });
+
+  describe('find one user by email', () => {
+    it('should be defined', () => {
+      expect(service.findOneByEmail).toBeDefined();
+    });
+    it('should return user with matching email', () => {
+      expect(service.findOneByEmail(userEmail)).toEqual({
         ...userMock(createUserDto),
         id: expect.any(Number),
         token: expect.any(String),
