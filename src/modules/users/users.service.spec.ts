@@ -7,7 +7,24 @@ import { UsersService } from './users.service';
 
 describe('UsersService', () => {
   let service: UsersService;
-
+  const userPhone = '+79991112233';
+  const createUserDto: CreateUserDto = {
+    name: 'Никита',
+    surname: 'Нечаев',
+    email: 'example@mail.me',
+    phone: userPhone,
+    password: 'RandomPass111',
+  };
+  const userMock = (createUserDto: CreateUserDto): User => {
+    return {
+      id: Date.now(),
+      ...createUserDto,
+      role: UserRole.CUSTOMER,
+      vkLink: null,
+      tgLink: null,
+      token: randomUUID(),
+    };
+  };
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -16,14 +33,10 @@ describe('UsersService', () => {
           provide: getRepositoryToken(User),
           useValue: {
             create: jest.fn((createUserDto: CreateUserDto) => {
-              return {
-                id: Date.now(),
-                ...createUserDto,
-                role: UserRole.CUSTOMER,
-                vkLink: null,
-                tgLink: null,
-                token: randomUUID(),
-              };
+              return userMock(createUserDto);
+            }),
+            findOneBy: jest.fn(() => {
+              return { ...userMock(createUserDto) };
             }),
           },
         },
@@ -38,20 +51,20 @@ describe('UsersService', () => {
   });
 
   describe('create', () => {
-    const createUserDto: CreateUserDto = {
-      name: 'Никита',
-      surname: 'Нечаев',
-      email: 'example@mail.me',
-      phone: '+79991112233',
-      password: 'RandomPass111',
-    };
     it('should return user', async () => {
       expect(service.create(createUserDto)).toEqual({
+        ...userMock(createUserDto),
         id: expect.any(Number),
-        ...createUserDto,
-        role: UserRole.CUSTOMER,
-        vkLink: null,
-        tgLink: null,
+        token: expect.any(String),
+      });
+    });
+  });
+
+  describe('find one by phone number', () => {
+    it('should return user with matching phone number', () => {
+      expect(service.findOneByPhone(userPhone)).toEqual({
+        ...userMock(createUserDto),
+        id: expect.any(Number),
         token: expect.any(String),
       });
     });

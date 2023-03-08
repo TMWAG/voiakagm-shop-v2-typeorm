@@ -15,11 +15,12 @@ export class UsersService {
   }
 
   findAll() {
+    this.usersRepository.findOne({ where: { id: 1 } });
     return `This action returns all users`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  findOneByPhone(phone: string) {
+    return this.usersRepository.findOneBy({ phone });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
