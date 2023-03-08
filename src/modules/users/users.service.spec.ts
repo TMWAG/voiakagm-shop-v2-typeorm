@@ -9,6 +9,8 @@ import { UsersService } from './users.service';
 describe('UsersService', () => {
   let service: UsersService;
   const userPhone = '+79991112233';
+  const notRegisteredPhone = '+79998882244';
+  const notRegisteredEmail = 'non@exis.tent';
   const userEmail = 'example@mail.me';
   const userToken = randomUUID();
   const createUserDtoMock: CreateUserDto = {
@@ -70,21 +72,33 @@ describe('UsersService', () => {
                 ...mockUsers[0],
               };
             }),
-            findOneByOrFail: jest.fn(
-              (where: FindOptionsWhere<User>): User | undefined => {
+            findOneBy: jest.fn(
+              async (
+                where: FindOptionsWhere<User>,
+              ): Promise<User | undefined> => {
                 if (where.id) {
-                  return mockUsers.find(({ id }) => id === where.id);
+                  const result = mockUsers.find(({ id }) => id === where.id);
+                  return result ? result : null;
                 }
                 if (where.phone) {
-                  return mockUsers.find(({ phone }) => phone === where.phone);
+                  const result = mockUsers.find(
+                    ({ phone }) => phone === where.phone,
+                  );
+                  return result ? result : null;
                 }
                 if (where.email) {
-                  return mockUsers.find(({ email }) => email === where.email);
+                  const result = mockUsers.find(
+                    ({ email }) => email === where.email,
+                  );
+                  return result ? result : null;
                 }
                 if (where.token) {
-                  return mockUsers.find(({ token }) => token === where.token);
+                  const result = mockUsers.find(
+                    ({ token }) => token === where.token,
+                  );
+                  return result ? result : null;
                 }
-                throw Error;
+                return null;
               },
             ),
           },
@@ -117,11 +131,14 @@ describe('UsersService', () => {
       expect(service.findOneByPhone).toBeDefined();
     });
     it('should return user with matching phone number', () => {
-      expect(service.findOneByPhone(userPhone)).toEqual({
+      expect(service.findOneByPhone(userPhone)).resolves.toEqual({
         ...mockUsers[2],
         id: expect.any(Number),
         token: expect.any(String),
       });
+    });
+    it('should return undefined', () => {
+      expect(service.findOneByPhone(notRegisteredPhone)).resolves.toBeNull();
     });
   });
 
@@ -129,12 +146,15 @@ describe('UsersService', () => {
     it('should be defined', () => {
       expect(service.findOneByEmail).toBeDefined();
     });
-    it('should return user with matching email', () => {
-      expect(service.findOneByEmail(userEmail)).toEqual({
+    it('should return user with matching email', async () => {
+      expect(service.findOneByEmail(userEmail)).resolves.toEqual({
         ...mockUsers[0],
         id: expect.any(Number),
         token: expect.any(String),
       });
+    });
+    it('should return undefined', () => {
+      expect(service.findOneByEmail(notRegisteredEmail)).resolves.toBeNull();
     });
   });
 });
